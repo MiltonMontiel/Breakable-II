@@ -11,8 +11,7 @@ WORKDIR /app
 # Dependency installation 
 FROM base AS dependencies
 
-RUN echo ${PWD} && ls -lR
-COPY package.json package-lock.json ./ 
+COPY front/package.json front/package-lock.json ./ 
 RUN npm ci 
 
 # Building the project
@@ -20,12 +19,13 @@ FROM base AS build
 
 
 COPY --from=dependencies /app/node_modules ./node_modules
-COPY . .
+COPY /front .
 
 # Public build-time env variables: 
 #
 #
 
+RUN echo ${PWD} && ls -lR
 RUN npm run build
 
 # Running the application 
