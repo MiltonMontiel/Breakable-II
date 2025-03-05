@@ -1,6 +1,13 @@
 # Backend
 
-This consists of a Java backend using Gradle and Spring Boot. 
+This consists of a Java backend using Gradle and Spring Boot.
+
+## Setup
+
+1. Change the contents of `main/resources/applicaiton.properties.example` and rename it
+   to `main/resources/application.properties`.
+
+2. Run `./gradlew build -x test`.
 
 ## Functionalities
 
