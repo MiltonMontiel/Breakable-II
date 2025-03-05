@@ -39,16 +39,13 @@ public class Controller {
 
     @GetMapping("/me/top/artist")
     public ResponseEntity<Object> getTopArtist() {
-        Object artist = this.spotifyService.getUserTopArtist();
-
-        return new ResponseEntity<>(artist, HttpStatus.OK);
+        return new ResponseEntity<>(this.spotifyService.getUserTopArtist(), HttpStatus.OK);
 
     }
 
     @GetMapping("/search")
     public ResponseEntity<Object> search(@RequestParam String q, @RequestParam List<String> type) {
-        return new ResponseEntity<>(spotifyService.search(q, type),
-                HttpStatus.FOUND);
+        return new ResponseEntity<>(spotifyService.search(q, type), HttpStatus.OK);
     }
 
     @GetMapping("/artists/{id}")
@@ -62,7 +59,7 @@ public class Controller {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<Object> getUserProfile(@RequestParam String accessToken) {
+    public ResponseEntity<Object> getUserProfile() {
         Object userProfile = spotifyService.getUserProfile();
         return ResponseEntity.ok(userProfile);
     }
