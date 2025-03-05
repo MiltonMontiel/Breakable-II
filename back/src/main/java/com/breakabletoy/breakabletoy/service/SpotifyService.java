@@ -1,16 +1,19 @@
 package com.breakabletoy.breakabletoy.service;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.breakabletoy.breakabletoy.config.SpotifyConfig;
 import com.breakabletoy.breakabletoy.model.SpotifyTokenResponse;
@@ -18,12 +21,31 @@ import com.breakabletoy.breakabletoy.model.SpotifyTokenResponse;
 @Service
 public class SpotifyService {
     private final WebClient spotifyWebClient;
+    private final WebClient authWebClient;
     private final SpotifyConfig spotifyConfig;
     private SpotifyTokenResponse currentToken;
 
-    public SpotifyService(WebClient spotifyWebClient, SpotifyConfig spotifyConfig) {
-        this.spotifyWebClient = spotifyWebClient;
+    public SpotifyService(SpotifyConfig spotifyConfig) {
         this.spotifyConfig = spotifyConfig;
+        this.spotifyWebClient = spotifyConfig.spotifyWebClient();
+        this.authWebClient = spotifyConfig.authWebClient();
+    }
+
+    public HttpHeaders requestUserAuth() {
+        String scope = "user-read-private user-read-email user-top-read";
+
+        String authUrl = UriComponentsBuilder
+                .fromUriString("https://accounts.spotify.com/authorize")
+                .queryParam("response_type", "code")
+                .queryParam("redirect_uri", spotifyConfig.getRedirectUri())
+                .queryParam("client_id", spotifyConfig.getClientId())
+                .queryParam("scope", scope)
+                .toUriString();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(authUrl));
+
+        return headers;
     }
 
     public SpotifyTokenResponse getAccessToken(String code) {
@@ -36,12 +58,8 @@ public class SpotifyService {
         formData.add("code", code);
         formData.add("redirect_uri", spotifyConfig.getRedirectUri());
 
-        WebClient authClient = WebClient.builder()
-                .baseUrl("https://accounts.spotify.com/api")
-                .build();
-
-        SpotifyTokenResponse tokenResponse = authClient.post()
-                .uri("/token")
+        SpotifyTokenResponse tokenResponse = this.authWebClient.post()
+                .uri("/api/token")
                 .header("Authorization", "Basic " + encodedCredentials)
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(BodyInserters.fromFormData(formData))

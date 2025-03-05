@@ -17,9 +17,16 @@ public class SpotifyConfig {
     private String redirectUri;
 
     @Bean
-    WebClient spotifyWebClient() {
+    public WebClient spotifyWebClient() {
         return WebClient.builder()
                 .baseUrl("https://api.spotify.com/v1")
+                .build();
+    }
+
+    @Bean
+    public WebClient authWebClient() {
+        return WebClient.builder()
+                .baseUrl("https://accounts.spotify.com")
                 .build();
     }
 
