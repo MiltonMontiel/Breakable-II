@@ -1,8 +1,7 @@
 "use client";
 import ArtistPage from "@/components/ArtistPage";
-import ArtistCard from "@/components/Card";
 import { getArtist } from "@/utils/api";
-import { Usable, use } from "react";
+import { use } from "react";
 
 export default function Artist({
   params,

@@ -1,5 +1,6 @@
 import { Album } from "@/types/Album";
 import { Artist } from "@/types/Artist";
+import { ArtistAlbums } from "@/types/ArtistAlbums";
 import { SearchParams } from "@/types/SearchParams";
 import { SearchResponse } from "@/types/SearchResponse";
 import { TopItems } from "@/types/TopItems";
@@ -43,6 +44,17 @@ export const getArtist = (id: String) => {
 
   return artist;
 };
+
+export const getArtistAlbums = (id: String ) => {
+  const [albums, setAlbums] = useState<ArtistAlbums>();
+
+  console.log("Fetching albums for artist " + id);
+  useEffect(() => {
+    fetchData(`/artistAlbums/${id}`, setAlbums, undefined);
+  }, []);
+
+  return albums;
+}
 
 export const getAlbum = (id: String) => {
   const [album, setAlbum] = useState<Album>();

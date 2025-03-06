@@ -7,4 +7,9 @@ export type Album = {
   id: string;
   images: Image[];
   name: string;
+  release_date: string;
+  artists: {
+    id: string;
+    name: string;
+  };
 };
