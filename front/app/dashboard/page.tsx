@@ -1,12 +1,19 @@
 "use client";
-import { getArtist, getUserProfile, userIsLogged } from "@/utils/api";
+import {
+  getArtist,
+  getUserProfile,
+  getUserTopArtists,
+  userIsLogged,
+} from "@/utils/api";
 import Login from "../login/app";
 import ArtistCard from "@/components/Card";
+import DisplayTopArtists from "@/components/DisplayTopArtists";
 
 export default function Dashboard() {
   const isLoggedIn = userIsLogged();
   const artist = getArtist("0TnOYISbd1XYRBk9myaseg");
   const profile = getUserProfile();
+  const topArtist = getUserTopArtists();
 
   if (!isLoggedIn) {
     return <Login />;
@@ -14,9 +21,9 @@ export default function Dashboard() {
     return (
       <div>
         Welcome {profile?.display_name}.
-        <div>
-          <ArtistCard artist={artist} size={"lg"} />
-        </div>
+        {topArtist != undefined && (
+          <DisplayTopArtists artists={topArtist?.items} />
+        )}
       </div>
     );
   }

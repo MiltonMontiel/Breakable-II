@@ -15,7 +15,7 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
   console.log(artist);
   if (size == "lg") {
     return (
-      <Card variant="plain" sx={{ width: 300, bgcolor: "initial", p: 0 }}>
+      <Card variant="plain" sx={{ width: "%100", bgcolor: "initial", p: 0 }}>
         <Box sx={{ position: "relative" }}>
           <AspectRatio ratio={"4/3"}>
             {artist?.images != undefined && (
