@@ -5,8 +5,13 @@ import CardCover from "@mui/joy/CardCover";
 import Box from "@mui/joy/Box";
 import AspectRatio from "@mui/joy/AspectRatio";
 import { Button, Chip, Typography } from "@mui/material";
-import { InsightsOutlined, HeadphonesOutlined } from "@mui/icons-material";
+import {
+  InsightsOutlined,
+  HeadphonesOutlined,
+  PlayCircleFilledWhiteOutlined,
+} from "@mui/icons-material";
 import Image from "next/image";
+import Link from "next/link";
 
 const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
   artist,
@@ -36,7 +41,7 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
               opacity: 0,
               transition: "0.1s ease-in",
               background:
-                "linear-gradient(180deg, transparent 62%, rgba(0,0,0,0.00345888) 63.94%, rgba(0,0,0,0.014204) 65.89%, rgba(0,0,0,0.0326639) 67.83%, rgba(0,0,0,0.0589645) 69.78%, rgba(0,0,0,0.0927099) 71.72%, rgba(0,0,0,0.132754) 73.67%, rgba(0,0,0,0.177076) 75.61%, rgba(0,0,0,0.222924) 77.56%, rgba(0,0,0,0.267246) 79.5%, rgba(0,0,0,0.30729) 81.44%, rgba(0,0,0,0.341035) 83.39%, rgba(0,0,0,0.367336) 85.33%, rgba(0,0,0,0.385796) 87.28%, rgba(0,0,0,0.396541) 89.22%, rgba(0,0,0,0.4) 91.17%)",
+                "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(32,32,32,0.9346113445378151) 48%, rgba(0,0,0,0.7973564425770308) 100%)",
             }}
           >
             <div>
@@ -44,34 +49,45 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
                 sx={{
                   p: 2,
                   display: "flex",
-                  flexDirection: "column", 
-                  alignItems: "center",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  justifyContent: "center",
                   gap: 1.5,
                   flexGrow: 1,
                   alignSelf: "flex-end",
-                color: "white"
+                  color: "white",
                 }}
               >
-                <Button color="success">
-                <Typography variant="h6" noWrap>Listen</Typography>
+                <Button
+                  color="success"
+                  variant="outlined"
+                  endIcon={<PlayCircleFilledWhiteOutlined />}
+                >
+                  <Link href={`/artist/${artist?.id}`}>
+                    <Typography variant="subtitle1" noWrap>
+                    Go to artist
+                    </Typography>
+                  </Link>
                 </Button>
-          <Box sx={{display: "flex", gap: 1}}>
-            <Chip
-              label={`${artist?.popularity}/100`}
-              sx={{ p: 0.6 }}
-              icon={<InsightsOutlined /> }
-              color="warning"
-            />
-            <Chip
-              label={`${((artist?.followers.total as number) / 1000000).toFixed(
-                2
-              )} M`}
-              icon={<HeadphonesOutlined/>}
-              color="success"
-              variant="filled"
-              sx={{ p: 0.6 }}
-            />
-          </Box>
+                <Box sx={{ display: "flex", gap: 1 }}>
+                  <Chip
+                    label={`${artist?.popularity}/100`}
+                    sx={{ p: 0.6 }}
+                    icon={<InsightsOutlined />}
+                    color="warning"
+                    variant="outlined"
+                  />
+                  <Chip
+                    label={`${(
+                      (artist?.followers.total as number) / 1000000
+                    ).toFixed(2)} M`}
+                    icon={<HeadphonesOutlined />}
+                    color="error"
+                    variant="outlined"
+                    sx={{ p: 0.6 }}
+                  />
+                </Box>
+                <Typography variant="h5">{artist?.name}</Typography>
               </Box>
             </div>
           </CardCover>
@@ -84,11 +100,7 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
             color: "white",
             justifyContent: "space-between",
           }}
-        >
-          <Box>
-            <Typography variant="h5">{artist?.name}</Typography>
-          </Box>
-        </Box>
+        ></Box>
       </Card>
     );
   }

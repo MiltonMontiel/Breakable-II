@@ -10,9 +10,9 @@ const DisplayTopArtists: FC<{ artists: Artist[] }> = ({ artists }) => {
       <Typography variant="h3">Your top artists</Typography>
       <Grid container spacing={2} sx={{ flexGrow: 1 }}>
         {artists.map((artist) => (
-          <Grid size={3}>
-            <ArtistCard artist={artist} size="lg" key={artist.id} />
-          </Grid>
+            <Grid size={3} key={artist.id}>
+              <ArtistCard artist={artist} size="lg" />
+            </Grid>
         ))}
       </Grid>
     </Box>

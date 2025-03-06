@@ -20,7 +20,6 @@ export default function Dashboard() {
   } else {
     return (
       <div>
-        Welcome {profile?.display_name}.
         {topArtist != undefined && (
           <DisplayTopArtists artists={topArtist?.items} />
         )}
