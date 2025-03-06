@@ -6,6 +6,7 @@ import {
 import Login from "../login/app";
 import DisplayTopArtists from "@/components/DisplayTopArtists";
 import SearchBar from "@/components/SearchBar";
+import GraphPlayground from "@/components/GraphPlayground";
 
 export default function Dashboard() {
   const isLoggedIn = userIsLogged();
@@ -20,6 +21,7 @@ export default function Dashboard() {
         {topArtist != undefined && (
           <DisplayTopArtists artists={topArtist?.items} />
         )}
+      <GraphPlayground />
       </div>
     );
   }
