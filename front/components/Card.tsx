@@ -8,7 +8,7 @@ import { Button, Chip, Typography } from "@mui/material";
 import {
   InsightsOutlined,
   HeadphonesOutlined,
-  ArrowOutward, 
+  ArrowOutward,
 } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
@@ -59,17 +59,17 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
                   color: "white",
                 }}
               >
+                  <Link href={`/artist/${artist?.id}`}>
                 <Button
-                  color="success"
-                  variant="outlined"
+                  variant="contained"
+                  sx={{ color: "black", background: "#1ED760" }}
                   endIcon={<ArrowOutward />}
                 >
-                  <Link href={`/artist/${artist?.id}`}>
                     <Typography variant="subtitle1" noWrap>
-                    Go to artist
+                      Go to artist
                     </Typography>
-                  </Link>
                 </Button>
+                  </Link>
                 <Box sx={{ display: "flex", gap: 1 }}>
                   <Chip
                     label={`${artist?.popularity}/100`}
@@ -107,74 +107,76 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
   }
 };
 
-export const AlbumCard: FC<{album: Album, variant: "album" | "single"}> = ({album, variant}) => {
-    return (
-      <Card variant="plain" sx={{ width: "%100", bgcolor: "initial", p: 0 }}>
-        <Box sx={{ position: "relative" }}>
-          <AspectRatio ratio={"4/3"}>
-            {album?.images != undefined && (
-              <Image
-                src={album?.images[0].url}
-                alt={"test"}
-                height={album?.images[0].height}
-                width={album?.images[0].width}
-              />
-            )}
-          </AspectRatio>
-          <CardCover
-            className="gradient-cover"
-            sx={{
-              "&:hover, &:focus-within": {
-                opacity: 1,
-              },
-              opacity: 0,
-              transition: "0.1s ease-in",
-              background:
-                "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(32,32,32,0.9346113445378151) 48%, rgba(0,0,0,0.7973564425770308) 100%)",
-            }}
-          >
-            <div>
-              <Box
-                sx={{
-                  p: 2,
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "start",
-                  justifyContent: "center",
-                  gap: 1.5,
-                  flexGrow: 1,
-                  alignSelf: "flex-end",
-                  color: "white",
-                }}
-              >
+export const AlbumCard: FC<{ album: Album; variant: "album" | "single" }> = ({
+  album,
+  variant,
+}) => {
+  return (
+    <Card variant="plain" sx={{ width: "%100", bgcolor: "initial", p: 0 }}>
+      <Box sx={{ position: "relative" }}>
+        <AspectRatio ratio={"4/3"}>
+          {album?.images != undefined && (
+            <Image
+              src={album?.images[0].url}
+              alt={"test"}
+              height={album?.images[0].height}
+              width={album?.images[0].width}
+            />
+          )}
+        </AspectRatio>
+        <CardCover
+          className="gradient-cover"
+          sx={{
+            "&:hover, &:focus-within": {
+              opacity: 1,
+            },
+            opacity: 0,
+            transition: "0.1s ease-in",
+            background:
+              "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(32,32,32,0.9346113445378151) 48%, rgba(0,0,0,0.7973564425770308) 100%)",
+          }}
+        >
+          <div>
+            <Box
+              sx={{
+                p: 2,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "start",
+                justifyContent: "center",
+                gap: 1.5,
+                flexGrow: 1,
+                alignSelf: "flex-end",
+                color: "white",
+              }}
+            >
+              <Link href={`/album/${album?.id}`}>
                 <Button
-                  color="success"
-                  variant="outlined"
+                  variant="contained"
+                  sx={{ color: "black", background: "#1ED760" }}
                   endIcon={<ArrowOutward />}
                 >
-                  <Link href={`/album/${album?.id}`}>
-                    <Typography variant="subtitle1" noWrap>
-                    Go to {variant} 
-                    </Typography>
-                  </Link>
+                  <Typography variant="subtitle1" noWrap>
+                    Go to {variant}
+                  </Typography>
                 </Button>
-                <Typography variant="h5">{album?.name}</Typography>
-              </Box>
-            </div>
-          </CardCover>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            alignItems: "center",
-            color: "white",
-            justifyContent: "space-between",
-          }}
-        ></Box>
-      </Card>
-    )
-
-}
+              </Link>
+              <Typography variant="h5">{album?.name}</Typography>
+            </Box>
+          </div>
+        </CardCover>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          gap: 2,
+          alignItems: "center",
+          color: "white",
+          justifyContent: "space-between",
+        }}
+      ></Box>
+    </Card>
+  );
+};
 
 export default ArtistCard;

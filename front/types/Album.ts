@@ -13,7 +13,7 @@ export type Album = {
   artists: {
     id: string;
     name: string;
-  };
+  }[];
   tracks: {
     total: number;
     items: Track[];

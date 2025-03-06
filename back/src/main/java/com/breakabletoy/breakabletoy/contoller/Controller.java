@@ -2,16 +2,10 @@ package com.breakabletoy.breakabletoy.contoller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.result.view.RedirectView;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.breakabletoy.breakabletoy.model.SpotifyTokenResponse;
 import com.breakabletoy.breakabletoy.service.SpotifyService;
 
 import java.net.URI;
 import java.util.List;
-
-import javax.swing.RepaintManager;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
