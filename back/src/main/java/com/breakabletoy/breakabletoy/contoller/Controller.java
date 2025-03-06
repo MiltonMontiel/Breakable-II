@@ -2,10 +2,9 @@ package com.breakabletoy.breakabletoy.contoller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
-
-import com.breakabletoy.breakabletoy.model.SpotifyTokenResponse;
 import com.breakabletoy.breakabletoy.service.SpotifyService;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -26,9 +25,11 @@ public class Controller {
     }
 
     @GetMapping("/auth/spotify")
-    public ResponseEntity<String> getSpotifyCallback(@RequestParam(required = false) String code) {
-        SpotifyTokenResponse tokenReponse = this.spotifyService.getAccessToken(code);
-        return new ResponseEntity<>(tokenReponse.getAccessToken(), HttpStatus.FOUND);
+    public ResponseEntity<Void> getSpotifyCallback(@RequestParam(required = false) String code) {
+        this.spotifyService.getAccessToken(code);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("http://localhost:3000"));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     @GetMapping("/login")
@@ -39,21 +40,23 @@ public class Controller {
 
     @GetMapping("/me/top/artist")
     public ResponseEntity<Object> getTopArtist() {
-        Object artist = this.spotifyService.getUserTopArtist();
-
-        return new ResponseEntity<>(artist, HttpStatus.OK);
+        return new ResponseEntity<>(this.spotifyService.getUserTopArtist(), HttpStatus.OK);
 
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> search(@RequestParam String q, @RequestParam List<String> type) {
-        return new ResponseEntity<>(spotifyService.search(q, type),
-                HttpStatus.FOUND);
+    public ResponseEntity<Object> search(@RequestParam String q, @RequestParam String type) {
+        return new ResponseEntity<>(spotifyService.search(q, type), HttpStatus.OK);
     }
 
     @GetMapping("/artists/{id}")
     public ResponseEntity<Object> getArtist(@PathVariable String id) {
         return new ResponseEntity<>(spotifyService.getArtist(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/artistAlbums/{id}")
+    public ResponseEntity<Object> getArtistsAlbums(@PathVariable String id) {
+        return new ResponseEntity<>(spotifyService.getArtistsAlbums(id), HttpStatus.OK);
     }
 
     @GetMapping("/albums/{id}")
@@ -62,9 +65,14 @@ public class Controller {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<Object> getUserProfile(@RequestParam String accessToken) {
+    public ResponseEntity<Object> getUserProfile() {
         Object userProfile = spotifyService.getUserProfile();
         return ResponseEntity.ok(userProfile);
+    }
+
+    @GetMapping("/isLoggedIn")
+    public Boolean getLogInformation() {
+        return this.spotifyService.isLogedIn();
     }
 
 }

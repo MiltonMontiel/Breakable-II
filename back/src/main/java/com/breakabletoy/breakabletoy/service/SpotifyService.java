@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,6 +30,10 @@ public class SpotifyService {
         this.spotifyConfig = spotifyConfig;
         this.spotifyWebClient = spotifyConfig.spotifyWebClient();
         this.authWebClient = spotifyConfig.authWebClient();
+    }
+
+    public Boolean isLogedIn() {
+        return Optional.ofNullable(this.currentToken).isPresent();
     }
 
     public HttpHeaders requestUserAuth() {
@@ -94,6 +99,18 @@ public class SpotifyService {
                 .retrieve().bodyToMono(Object.class).block();
     }
 
+    public Object getArtistsAlbums(String id) {
+        if (currentToken == null) {
+            throw new IllegalStateException("No access token available");
+        }
+
+        return spotifyWebClient.get()
+                .uri("/artists/" + id + "/albums")
+                .header("Authorization", "Bearer " + this.currentToken.getAccessToken())
+                .retrieve()
+                .bodyToMono(Object.class).block();
+    }
+
     public Object getAlbum(String id) {
         if (currentToken == null) {
             throw new IllegalStateException("No access token available");
@@ -113,7 +130,7 @@ public class SpotifyService {
                 .retrieve().bodyToMono(Object.class).block();
     }
 
-    public Object search(String q, List<String> type) {
+    public Object search(String q, String type) {
         return spotifyWebClient.get().uri(
                 builder -> builder.path("/search/")
                         .queryParam("q", q)
