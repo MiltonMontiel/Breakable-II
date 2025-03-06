@@ -41,7 +41,7 @@ export const getArtist = (id: String) => {
 
   console.log(artist);
 
-  return { artist };
+  return artist;
 };
 
 export const getAlbum = (id: String) => {

@@ -9,6 +9,6 @@ export type Artist = {
   id: string;
   images: Image[];
   name: string;
-  populatiry: number;
+  popularity: number;
   uri: string;
 };
