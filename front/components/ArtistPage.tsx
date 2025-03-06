@@ -8,10 +8,10 @@ import Grid from "@mui/material/Grid2";
 
 const ArtistPage: FC<{ artist: Artist }> = ({ artist }) => {
   return (
-    <div>
+    <Box mx={24} my={4}>
       <Typography variant="h1">{artist.name}</Typography>
       <AlbumsSection id={artist.id} />
-    </div>
+    </Box>
   );
 };
 
@@ -19,7 +19,7 @@ const AlbumsSection: FC<{ id: string }> = ({ id }) => {
   const albums = getArtistAlbums(id);
   if (albums != undefined) {
     return (
-      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, px: 24 }}>
+      <Box sx={{ display: "flex", flexDirection: "column", gap: 2, }}>
         {albums.items.filter((album) => album.album_type == "album").length >
           0 && (
           <>

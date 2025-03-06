@@ -6,8 +6,8 @@ import { Box, Typography } from "@mui/material";
 
 const DisplayTopArtists: FC<{ artists: Artist[] }> = ({ artists }) => {
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", gap: 2, px: 24 }}>
-      <Typography variant="h3">Your top artists</Typography>
+    <Box mx={24} my={4} sx={{ display: "flex", flexDirection: "column", gap: 2, }}>
+      <Typography variant="h1">Your top artists</Typography>
       <Grid container spacing={2} sx={{ flexGrow: 1 }}>
         {artists.map((artist) => (
             <Grid size={3} key={artist.id}>
