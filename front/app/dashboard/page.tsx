@@ -5,6 +5,7 @@ import {
 } from "@/utils/api";
 import Login from "../login/app";
 import DisplayTopArtists from "@/components/DisplayTopArtists";
+import SearchBar from "@/components/SearchBar";
 
 export default function Dashboard() {
   const isLoggedIn = userIsLogged();
@@ -15,6 +16,7 @@ export default function Dashboard() {
   } else {
     return (
       <div>
+        <SearchBar />
         {topArtist != undefined && (
           <DisplayTopArtists artists={topArtist?.items} />
         )}
