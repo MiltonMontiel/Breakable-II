@@ -29,7 +29,7 @@ const AlbumsSection: FC<{ id: string }> = ({ id }) => {
                 .filter((album) => album.album_type == "album")
                 .map((album) => (
                   <Grid size={4} key={album.id}>
-                    <AlbumCard album={album} />
+                    <AlbumCard album={album} variant="album" />
                   </Grid>
                 ))}
             </Grid>
@@ -44,7 +44,7 @@ const AlbumsSection: FC<{ id: string }> = ({ id }) => {
                 .filter((album) => album.album_type == "single")
                 .map((album) => (
                   <Grid size={3} key={album.id}>
-                    <AlbumCard album={album} />
+                    <AlbumCard album={album} variant="single"/>
                   </Grid>
                 ))}
             </Grid>

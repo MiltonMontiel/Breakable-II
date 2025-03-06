@@ -45,7 +45,7 @@ export const getArtist = (id: String) => {
   return artist;
 };
 
-export const getArtistAlbums = (id: String ) => {
+export const getArtistAlbums = (id: String) => {
   const [albums, setAlbums] = useState<ArtistAlbums>();
 
   console.log("Fetching albums for artist " + id);
@@ -54,7 +54,7 @@ export const getArtistAlbums = (id: String ) => {
   }, []);
 
   return albums;
-}
+};
 
 export const getAlbum = (id: String) => {
   const [album, setAlbum] = useState<Album>();
@@ -65,7 +65,7 @@ export const getAlbum = (id: String) => {
     fetchData(`/albums/${id}`, setAlbum, undefined);
   }, []);
 
-  return { album };
+  return album;
 };
 
 export const getUserProfile = () => {

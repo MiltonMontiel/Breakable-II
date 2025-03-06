@@ -8,7 +8,6 @@ import { Button, Chip, Typography } from "@mui/material";
 import {
   InsightsOutlined,
   HeadphonesOutlined,
-  PlayCircleFilledWhiteOutlined,
   ArrowOutward, 
 } from "@mui/icons-material";
 import Image from "next/image";
@@ -108,7 +107,7 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
   }
 };
 
-export const AlbumCard: FC<{album: Album}> = ({album}) => {
+export const AlbumCard: FC<{album: Album, variant: "album" | "single"}> = ({album, variant}) => {
     return (
       <Card variant="plain" sx={{ width: "%100", bgcolor: "initial", p: 0 }}>
         <Box sx={{ position: "relative" }}>
@@ -155,7 +154,7 @@ export const AlbumCard: FC<{album: Album}> = ({album}) => {
                 >
                   <Link href={`/album/${album?.id}`}>
                     <Typography variant="subtitle1" noWrap>
-                    Go to album
+                    Go to {variant} 
                     </Typography>
                   </Link>
                 </Button>
