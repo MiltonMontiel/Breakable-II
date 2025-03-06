@@ -62,6 +62,7 @@ const SearchBar: FC<any> = () => {
                     );
                     router.push(encoded);
                   }}
+                  disabled={query == ""}
                 >
                   Search
                 </Button>
