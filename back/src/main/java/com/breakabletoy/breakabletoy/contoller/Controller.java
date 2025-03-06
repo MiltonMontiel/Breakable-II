@@ -45,7 +45,7 @@ public class Controller {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Object> search(@RequestParam String q, @RequestParam List<String> type) {
+    public ResponseEntity<Object> search(@RequestParam String q, @RequestParam String type) {
         return new ResponseEntity<>(spotifyService.search(q, type), HttpStatus.OK);
     }
 

@@ -8,7 +8,6 @@ import {
 export default function Home() {
   const isLoggedIn = userIsLogged();
 
-  console.log(isLoggedIn);
   if (!isLoggedIn) {
     return <Login /> 
   } else {

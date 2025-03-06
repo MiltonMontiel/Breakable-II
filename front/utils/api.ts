@@ -99,7 +99,8 @@ export const search = (searchParams: SearchParams) => {
   useEffect(() => {
     fetchData("/search", setReponse, {
       q: searchParams.q,
-      type: searchParams.type.join(","),
+      // This must already be a string.
+      type: searchParams.type,
     });
   }, []);
 

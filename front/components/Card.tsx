@@ -18,7 +18,6 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
   artist,
   size,
 }) => {
-  console.log(artist);
   if (size == "lg") {
     return (
       <Card variant="plain" sx={{ width: "%100", bgcolor: "initial", p: 0 }}>
@@ -59,17 +58,17 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
                   color: "white",
                 }}
               >
-                  <Link href={`/artist/${artist?.id}`}>
-                <Button
-                  variant="contained"
-                  sx={{ color: "black", background: "#1ED760" }}
-                  endIcon={<ArrowOutward />}
-                >
+                <Link href={`/artist/${artist?.id}`}>
+                  <Button
+                    variant="contained"
+                    sx={{ color: "black", background: "#1ED760" }}
+                    endIcon={<ArrowOutward />}
+                  >
                     <Typography variant="subtitle1" noWrap>
                       Go to artist
                     </Typography>
-                </Button>
-                  </Link>
+                  </Button>
+                </Link>
                 <Box sx={{ display: "flex", gap: 1 }}>
                   <Chip
                     label={`${artist?.popularity}/100`}
@@ -107,10 +106,11 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
   }
 };
 
-export const AlbumCard: FC<{ album: Album; variant: "album" | "single" }> = ({
-  album,
-  variant,
-}) => {
+export const AlbumCard: FC<{
+  customTitle?: string;
+  album: Album;
+  variant: "album" | "single" | "compilation";
+}> = ({ customTitle, album, variant }) => {
   return (
     <Card variant="plain" sx={{ width: "%100", bgcolor: "initial", p: 0 }}>
       <Box sx={{ position: "relative" }}>
@@ -161,7 +161,11 @@ export const AlbumCard: FC<{ album: Album; variant: "album" | "single" }> = ({
                   </Typography>
                 </Button>
               </Link>
-              <Typography variant="h5">{album?.name}</Typography>
+              {customTitle != null ? (
+                <Typography variant="h6">{customTitle}</Typography>
+              ) : (
+                <Typography variant="h5">{album?.name}</Typography>
+              )}
             </Box>
           </div>
         </CardCover>

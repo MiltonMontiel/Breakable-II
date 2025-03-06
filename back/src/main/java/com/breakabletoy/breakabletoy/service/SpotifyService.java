@@ -130,7 +130,7 @@ public class SpotifyService {
                 .retrieve().bodyToMono(Object.class).block();
     }
 
-    public Object search(String q, List<String> type) {
+    public Object search(String q, String type) {
         return spotifyWebClient.get().uri(
                 builder -> builder.path("/search/")
                         .queryParam("q", q)

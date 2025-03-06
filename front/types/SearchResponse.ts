@@ -1,9 +1,18 @@
+import { Album } from "./Album";
+import { Artist } from "./Artist";
+import { Track } from "./Track";
+
 export type SearchResponse = {
-    tracks: any, 
-    artists: any, 
-    albums: any, 
-    playlists: any, 
-    shows: any, 
-    episodes: any, 
-    audiobooks: any, 
-}
+  tracks: {
+    total: number;
+    items: Track[];
+  };
+  artists: {
+    total: number;
+    items: Artist[];
+  };
+  albums: {
+    total: number;
+    items: Album[];
+  };
+};

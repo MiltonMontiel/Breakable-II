@@ -1,7 +1,9 @@
+import { Album } from "./Album"
 import { Artist } from "./Artist"
 
 export type Track = {
     artists: Artist[], 
+    album: Album, 
     duration_ms: number, 
     explicit: boolean, 
     id: string, 
