@@ -5,6 +5,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -29,6 +30,10 @@ public class SpotifyService {
         this.spotifyConfig = spotifyConfig;
         this.spotifyWebClient = spotifyConfig.spotifyWebClient();
         this.authWebClient = spotifyConfig.authWebClient();
+    }
+
+    public Boolean isLogedIn() {
+        return Optional.ofNullable(this.currentToken).isPresent();
     }
 
     public HttpHeaders requestUserAuth() {

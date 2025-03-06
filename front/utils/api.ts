@@ -11,26 +11,23 @@ export const AxiosInstance = axios.create({
   baseURL: "http://localhost:8080",
 });
 
-export const useAccessToken = () => {
-  const [token, setToken] = useState("");
+export const userIsLogged = () => {
+  const [isLogged, setIsLogged] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
-      AxiosInstance.get("/login")
-        .then((res: any) => {
-          console.log("Here");
-          console.log(res.data);
-          setToken(res.data);
-        })
-        .catch((error: any) => {
-          console.error(error);
-        });
-    };
-
-    fetchData();
+    // fetchData("/isLoggedIn", setIsLogged, undefined);
+    AxiosInstance.get("/isLoggedIn", {
+      params: undefined,
+    })
+      .then((res: any) => {
+        setIsLogged(res.data);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
   }, []);
 
-  return { token };
+  return isLogged;
 };
 
 export const getArtist = (id: String) => {

@@ -2,10 +2,13 @@ package com.breakabletoy.breakabletoy.contoller;
 
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
+import org.springframework.web.reactive.result.view.RedirectView;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.breakabletoy.breakabletoy.model.SpotifyTokenResponse;
 import com.breakabletoy.breakabletoy.service.SpotifyService;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.HttpHeaders;
@@ -26,9 +29,11 @@ public class Controller {
     }
 
     @GetMapping("/auth/spotify")
-    public ResponseEntity<String> getSpotifyCallback(@RequestParam(required = false) String code) {
-        SpotifyTokenResponse tokenReponse = this.spotifyService.getAccessToken(code);
-        return new ResponseEntity<>(tokenReponse.getAccessToken(), HttpStatus.FOUND);
+    public ResponseEntity<Void> getSpotifyCallback(@RequestParam(required = false) String code) {
+        this.spotifyService.getAccessToken(code);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("http://localhost:3000"));
+        return new ResponseEntity<>(headers, HttpStatus.MOVED_PERMANENTLY);
     }
 
     @GetMapping("/login")
@@ -62,6 +67,11 @@ public class Controller {
     public ResponseEntity<Object> getUserProfile() {
         Object userProfile = spotifyService.getUserProfile();
         return ResponseEntity.ok(userProfile);
+    }
+
+    @GetMapping("/isLoggedIn")
+    public Boolean getLogInformation() {
+        return this.spotifyService.isLogedIn();
     }
 
 }
