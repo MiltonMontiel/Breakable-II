@@ -99,6 +99,18 @@ public class SpotifyService {
                 .retrieve().bodyToMono(Object.class).block();
     }
 
+    public Object getArtistsAlbums(String id) {
+        if (currentToken == null) {
+            throw new IllegalStateException("No access token available");
+        }
+
+        return spotifyWebClient.get()
+                .uri("/artists/" + id + "/albums")
+                .header("Authorization", "Bearer " + this.currentToken.getAccessToken())
+                .retrieve()
+                .bodyToMono(Object.class).block();
+    }
+
     public Object getAlbum(String id) {
         if (currentToken == null) {
             throw new IllegalStateException("No access token available");

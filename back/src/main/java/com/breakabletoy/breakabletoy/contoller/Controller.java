@@ -11,6 +11,8 @@ import com.breakabletoy.breakabletoy.service.SpotifyService;
 import java.net.URI;
 import java.util.List;
 
+import javax.swing.RepaintManager;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -56,6 +58,11 @@ public class Controller {
     @GetMapping("/artists/{id}")
     public ResponseEntity<Object> getArtist(@PathVariable String id) {
         return new ResponseEntity<>(spotifyService.getArtist(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/artistAlbums/{id}")
+    public ResponseEntity<Object> getArtistsAlbums(@PathVariable String id) {
+        return new ResponseEntity<>(spotifyService.getArtistsAlbums(id), HttpStatus.OK);
     }
 
     @GetMapping("/albums/{id}")
