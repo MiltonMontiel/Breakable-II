@@ -2,8 +2,6 @@ import {
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
-  Background,
-  BackgroundVariant,
   Controls,
   Handle,
   MiniMap,

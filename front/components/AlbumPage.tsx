@@ -2,9 +2,10 @@ import { Album } from "@/types/Album";
 import { FC } from "react";
 import Typography from "@mui/material/Typography";
 import { Box, Button, Chip, Grid2 } from "@mui/material";
-import {ArrowBack}from "@mui/icons-material";
+import { ArrowBack } from "@mui/icons-material";
 import Image from "next/image";
 import Link from "next/link";
+import PlayCircleFilledWhiteOutlinedIcon from "@mui/icons-material/PlayCircleFilledWhiteOutlined";
 
 const AlbumPage: FC<{ album: Album }> = ({ album }) => {
   const releaseDate = new Date(album.release_date);
@@ -15,7 +16,13 @@ const AlbumPage: FC<{ album: Album }> = ({ album }) => {
     <Box my={4}>
       <Box mx={24}>
         <Link href={`/artist/${returnLink}`}>
-          <Button variant="outlined" sx={{color: "#1ED760", borderColor: "#1ED760" }} startIcon={<ArrowBack/>}>Go back to {album.artists[0].name}</Button>
+          <Button
+            variant="outlined"
+            sx={{ color: "#1ED760", borderColor: "#1ED760" }}
+            startIcon={<ArrowBack />}
+          >
+            Go back to {album.artists[0].name}
+          </Button>
         </Link>
       </Box>
       <Box mx={24} my={4}>
@@ -43,25 +50,32 @@ const AlbumPage: FC<{ album: Album }> = ({ album }) => {
               >
                 <Typography variant="body1" p={1}>
                   <b>{track.track_number}.- </b>
-                  {track.name}{" "}
+                  {track.name}
                 </Typography>
 
-                {track.explicit ? (
-                  <Chip label="explicit" color="error" size="small" />
-                ) : null}
+                <Box
+                  sx={{
+                    display: "flex",
+                    gap: 2,
+                    alignItems: "center",
+                    alignContent: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {track.explicit ? (
+                    <Chip label="explicit" color="error" size="small" />
+                  ) : null}
+                  <Link href={track.external_urls.spotify}>
+                    <Button endIcon={<PlayCircleFilledWhiteOutlinedIcon />} color="success">
+                      Play
+                    </Button>
+                  </Link>
+                </Box>
               </Box>
             ))}
         </Grid2>
         <Grid2 size={4}>
           <Box sx={{}}>
-            {/* <AspectRatio
-              ratio={"4/3"}
-              sx={{
-                display: "flex",
-                alignContent: "center",
-                justifyContent: "center",
-              }}
-            > */}
             {album?.images != undefined && (
               <Image
                 src={album?.images[0].url}
