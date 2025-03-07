@@ -7,7 +7,6 @@ import {
   MiniMap,
   Position,
   ReactFlow,
-  useReactFlow,
 } from "@xyflow/react";
 import { Box, Typography } from "@mui/material";
 import "@xyflow/react/dist/style.css";
@@ -60,7 +59,7 @@ const artistToNode = (artist: Artist): ArtistNodeType => {
 };
 
 const artistsToNodes = (artists: Artist[]): ArtistNodeType[] => {
-  return artists.map((artist, idx) => artistToNode(artist));
+  return artists.map((artist) => artistToNode(artist));
 };
 
 const getGenreMap = (artists: Artist[]): Map<string, string[]> => {
@@ -84,7 +83,7 @@ const artistsToEdges = (artists: Artist[]): ArtistEdgeType[] => {
   const edges: ArtistEdgeType[] = [];
   const added = new Set();
 
-  genreMap.forEach((artistsId, _genre) => {
+  genreMap.forEach((artistsId) => {
     if (artistsId.length > 1) {
       while (artistsId.length > 0) {
         const sourceId = artistsId.pop() as string;
@@ -143,7 +142,6 @@ const GraphPlayground: FC<{ artists: Artist[] }> = ({ artists }) => {
   const initialEdges = artistsToEdges(artists);
   const { nodes, edges } = getLayoutedElements(initialNodes, initialEdges);
 
-  const { fitView } = useReactFlow();
   const [graphNodes, setGraphNodes] = useState(nodes);
   const [graphEdges, setGraphEdges] = useState(edges);
 
@@ -180,7 +178,7 @@ const GraphPlayground: FC<{ artists: Artist[] }> = ({ artists }) => {
         fitView
       >
         <Controls />
-        <MiniMap zoomable pannable/>
+        <MiniMap zoomable pannable />
       </ReactFlow>
     </Box>
   );
