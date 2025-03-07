@@ -9,4 +9,7 @@ export type Track = {
     id: string, 
     name: string, 
     track_number: number, 
+    external_urls: {
+        spotify: string
+    }
 }
