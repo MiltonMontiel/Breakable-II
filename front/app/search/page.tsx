@@ -8,11 +8,11 @@ import {
   AccordionDetails,
   AccordionGroup,
   AccordionSummary,
-  Grid,
 } from "@mui/joy";
 import ArtistCard, { AlbumCard } from "@/components/Card";
+import { Suspense } from "react";
 
-export default function Search() {
+const Results = () => {
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
   const type = searchParams.get("type");
@@ -20,7 +20,6 @@ export default function Search() {
     q: q as any,
     type: type as any,
   });
-
   if (response != undefined) {
     return (
       <Box sx={{ mx: 24, my: 4 }}>
@@ -35,7 +34,11 @@ export default function Search() {
                 <Grid2 container spacing={2}>
                   {response.tracks.items.map((track) => (
                     <Grid2 size={3} key={track.id}>
-                    <AlbumCard customTitle={`${track.name} - ${track.artists[0].name}`} album={track.album} variant={track.album.album_type} />
+                      <AlbumCard
+                        customTitle={`${track.name} - ${track.artists[0].name}`}
+                        album={track.album}
+                        variant={track.album.album_type}
+                      />
                     </Grid2>
                   ))}
                 </Grid2>
@@ -51,7 +54,7 @@ export default function Search() {
                 <Grid2 container spacing={2}>
                   {response.artists.items.map((artist) => (
                     <Grid2 size={3} key={artist.id}>
-                      <ArtistCard artist={artist} size="lg"/>
+                      <ArtistCard artist={artist} size="lg" />
                     </Grid2>
                   ))}
                 </Grid2>
@@ -67,7 +70,7 @@ export default function Search() {
                 <Grid2 container spacing={2}>
                   {response.albums.items.map((album) => (
                     <Grid2 size={3} key={album.id}>
-                      <AlbumCard album={album} variant={album.album_type}/>
+                      <AlbumCard album={album} variant={album.album_type} />
                     </Grid2>
                   ))}
                 </Grid2>
@@ -78,4 +81,11 @@ export default function Search() {
       </Box>
     );
   }
+};
+export default function Search() {
+  return (
+    <Suspense>
+      <Results />
+    </Suspense>
+  )
 }
