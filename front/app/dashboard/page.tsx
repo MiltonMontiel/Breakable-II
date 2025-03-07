@@ -1,11 +1,9 @@
 "use client";
-import {
-  getUserTopArtists,
-  userIsLogged,
-} from "@/utils/api";
+import { getUserTopArtists, userIsLogged } from "@/utils/api";
 import Login from "../login/app";
 import DisplayTopArtists from "@/components/DisplayTopArtists";
 import SearchBar from "@/components/SearchBar";
+import GraphPlayground from "@/components/GraphPlayground";
 
 export default function Dashboard() {
   const isLoggedIn = userIsLogged();
@@ -18,7 +16,10 @@ export default function Dashboard() {
       <div>
         <SearchBar />
         {topArtist != undefined && (
-          <DisplayTopArtists artists={topArtist?.items} />
+          <>
+            <DisplayTopArtists artists={topArtist?.items} />
+            <GraphPlayground artists={topArtist?.items} />
+          </>
         )}
       </div>
     );

@@ -92,17 +92,69 @@ const ArtistCard: FC<{ artist: Artist | undefined; size: "sm" | "lg" }> = ({
             </div>
           </CardCover>
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-            gap: 2,
-            alignItems: "center",
-            color: "white",
-            justifyContent: "space-between",
-          }}
-        ></Box>
       </Card>
     );
+  }
+
+  if (size == "sm") {
+    return(
+
+      <Card variant="plain" sx={{ width: "%100", height:"%100",  bgcolor: "initial", p: 0, backgroundColor: "blue" }}>
+        <Box sx={{ position: "relative" }}>
+          <AspectRatio ratio={"4/3"}>
+            {artist?.images != undefined && (
+              <Image
+                src={artist?.images[0].url}
+                alt={"test"}
+                height={artist?.images[0].height}
+                width={artist?.images[0].width}
+              />
+            )}
+          </AspectRatio>
+          <CardCover
+            className="gradient-cover"
+            sx={{
+              "&:hover, &:focus-within": {
+                opacity: 1,
+              },
+              opacity: 0,
+              transition: "0.1s ease-in",
+              background:
+                "linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(32,32,32,0.9346113445378151) 48%, rgba(0,0,0,0.7973564425770308) 100%)",
+            }}
+          >
+            <div>
+              <Box
+                sx={{
+                  p: 2,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  justifyContent: "center",
+                  gap: 1.5,
+                  flexGrow: 1,
+                  alignSelf: "flex-end",
+                  color: "white",
+                }}
+              >
+                <Link href={`/artist/${artist?.id}`}>
+                  <Button
+                    variant="contained"
+                    sx={{ color: "black", background: "#1ED760" }}
+                    endIcon={<ArrowOutward />}
+                  >
+                    <Typography variant="subtitle1" noWrap>
+                      Go to artist
+                    </Typography>
+                  </Button>
+                </Link>
+                <Typography variant="subtitle1">{artist?.name}</Typography>
+              </Box>
+            </div>
+          </CardCover>
+        </Box>
+      </Card>
+    )
   }
 };
 

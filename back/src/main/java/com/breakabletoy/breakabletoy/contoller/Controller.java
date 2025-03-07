@@ -5,7 +5,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.breakabletoy.breakabletoy.service.SpotifyService;
 
 import java.net.URI;
-import java.util.List;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
