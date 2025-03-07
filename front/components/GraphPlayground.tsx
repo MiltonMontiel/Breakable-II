@@ -6,6 +6,7 @@ import {
   BackgroundVariant,
   Controls,
   Handle,
+  MiniMap,
   Position,
   ReactFlow,
   useReactFlow,
@@ -35,22 +36,25 @@ type ArtistEdgeType = {
 const ArtistNode = ({ data }: any) => {
   return (
     <>
-      <div style={{ width: "200px", height: "150px" }}>
+      <div
+        style={{
+          width: `${data.artist.popularity * 2 + 200}px`,
+          height: "150px",
+        }}
+      >
         <ArtistCard artist={data.artist} size="sm" />
-        <Handle type="target" position={Position.Bottom} />
-        <Handle type="source" position={Position.Top} />
       </div>
+      <Handle type="target" position={Position.Right} />
+      <Handle type="source" position={Position.Left} />
     </>
   );
 };
 
 const artistToNode = (artist: Artist): ArtistNodeType => {
-  const x = Math.random() * 1500;
-  const y = Math.random() * 1000;
   return {
     id: artist.id,
     type: "artistNode",
-    position: { x: x, y: y },
+    position: { x: 0, y: 0 },
     data: {
       artist: artist,
     },
@@ -110,14 +114,14 @@ const nodeTypes = { artistNode: ArtistNode };
 
 const getLayoutedElements = (nodes: any, edges: any) => {
   const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
-  g.setGraph({ rankdir: "LR" });
+  g.setGraph({ rankdir: "RL", ranker: "tight-tree", align: "UL" });
 
   edges.forEach((edge: any) => g.setEdge(edge.source, edge.target));
   nodes.forEach((node: any) =>
     g.setNode(node.id, {
       ...node,
-      width: node.measured?.width ?? 0,
-      height: node.measured?.height ?? 0,
+      width: 400,
+      height: 250,
     })
   );
 
@@ -127,8 +131,8 @@ const getLayoutedElements = (nodes: any, edges: any) => {
     nodes: nodes.map((node: any) => {
       const position = g.node(node.id);
 
-      const x = position.x - (node.measured?.width ?? 0) / 2;
-      const y = position.y - (node.measured?.height ?? 0) / 2;
+      const x = position.x - 150 / 2;
+      const y = position.y - 150 / 2;
 
       return { ...node, position: { x, y } };
     }),
@@ -139,9 +143,11 @@ const getLayoutedElements = (nodes: any, edges: any) => {
 const GraphPlayground: FC<{ artists: Artist[] }> = ({ artists }) => {
   const initialNodes = artistsToNodes(artists);
   const initialEdges = artistsToEdges(artists);
+  const { nodes, edges } = getLayoutedElements(initialNodes, initialEdges);
 
-  const [graphNodes, setGraphNodes] = useState(initialNodes);
-  const [graphEdges, setGraphEdges] = useState(initialEdges);
+  const { fitView } = useReactFlow();
+  const [graphNodes, setGraphNodes] = useState(nodes);
+  const [graphEdges, setGraphEdges] = useState(edges);
 
   const onNodesChange = useCallback(
     (changes: any) =>
@@ -176,7 +182,7 @@ const GraphPlayground: FC<{ artists: Artist[] }> = ({ artists }) => {
         fitView
       >
         <Controls />
-        <Background variant={BackgroundVariant.Dots} gap={12} size={1} />
+        <MiniMap zoomable pannable/>
       </ReactFlow>
     </Box>
   );

@@ -3,7 +3,6 @@ package com.breakabletoy.breakabletoy.service;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -125,7 +124,8 @@ public class SpotifyService {
             throw new IllegalStateException("No access token available");
         }
 
-        return spotifyWebClient.get().uri("/me/top/artists")
+        return spotifyWebClient.get()
+                .uri(builder -> builder.path("/me/top/artists").queryParam("limit", 50).build())
                 .header("Authorization", "Bearer " + this.currentToken.getAccessToken())
                 .retrieve().bodyToMono(Object.class).block();
     }
