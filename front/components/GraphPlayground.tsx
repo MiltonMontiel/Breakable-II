@@ -6,18 +6,16 @@ import {
   BackgroundVariant,
   Controls,
   Handle,
-  MiniMap,
-  NodeToolbar,
   Position,
   ReactFlow,
-  useEdgesState,
-  useNodesState,
+  useReactFlow,
 } from "@xyflow/react";
 import { Box, Typography } from "@mui/material";
 import "@xyflow/react/dist/style.css";
 import { FC, useCallback, useState } from "react";
 import ArtistCard from "./Card";
 import { Artist } from "@/types/Artist";
+import Dagre from "@dagrejs/dagre";
 
 type ArtistNodeType = {
   id: string;
@@ -47,10 +45,12 @@ const ArtistNode = ({ data }: any) => {
 };
 
 const artistToNode = (artist: Artist): ArtistNodeType => {
+  const x = Math.random() * 1500;
+  const y = Math.random() * 1000;
   return {
     id: artist.id,
     type: "artistNode",
-    position: { x: 0, y: 0 },
+    position: { x: x, y: y },
     data: {
       artist: artist,
     },
@@ -58,7 +58,7 @@ const artistToNode = (artist: Artist): ArtistNodeType => {
 };
 
 const artistsToNodes = (artists: Artist[]): ArtistNodeType[] => {
-  return artists.map((artist) => artistToNode(artist));
+  return artists.map((artist, idx) => artistToNode(artist));
 };
 
 const getGenreMap = (artists: Artist[]): Map<string, string[]> => {
@@ -108,27 +108,57 @@ const artistsToEdges = (artists: Artist[]): ArtistEdgeType[] => {
 
 const nodeTypes = { artistNode: ArtistNode };
 
+const getLayoutedElements = (nodes: any, edges: any) => {
+  const g = new Dagre.graphlib.Graph().setDefaultEdgeLabel(() => ({}));
+  g.setGraph({ rankdir: "LR" });
+
+  edges.forEach((edge: any) => g.setEdge(edge.source, edge.target));
+  nodes.forEach((node: any) =>
+    g.setNode(node.id, {
+      ...node,
+      width: node.measured?.width ?? 0,
+      height: node.measured?.height ?? 0,
+    })
+  );
+
+  Dagre.layout(g);
+
+  return {
+    nodes: nodes.map((node: any) => {
+      const position = g.node(node.id);
+
+      const x = position.x - (node.measured?.width ?? 0) / 2;
+      const y = position.y - (node.measured?.height ?? 0) / 2;
+
+      return { ...node, position: { x, y } };
+    }),
+    edges,
+  };
+};
+
 const GraphPlayground: FC<{ artists: Artist[] }> = ({ artists }) => {
   const initialNodes = artistsToNodes(artists);
   const initialEdges = artistsToEdges(artists);
 
-  console.log(initialEdges);
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
+  const [graphNodes, setGraphNodes] = useState(initialNodes);
+  const [graphEdges, setGraphEdges] = useState(initialEdges);
 
   const onNodesChange = useCallback(
-    (changes: any) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes]
+    (changes: any) =>
+      setGraphNodes((nds: any) => applyNodeChanges(changes, nds)),
+    [setGraphNodes]
   );
 
   const onEdgesChange = useCallback(
-    (changes: any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    [setEdges]
+    (changes: any) =>
+      setGraphEdges((eds: any) => applyEdgeChanges(changes, eds)),
+    [setGraphEdges]
   );
 
   const onConnect = useCallback(
-    (connection: any) => setEdges((eds) => addEdge(connection, eds) as any),
-    [setEdges]
+    (connection: any) =>
+      setGraphEdges((eds: any) => addEdge(connection, eds) as any),
+    [setGraphEdges]
   );
 
   return (
@@ -137,8 +167,8 @@ const GraphPlayground: FC<{ artists: Artist[] }> = ({ artists }) => {
         Your graph playground
       </Typography>
       <ReactFlow
-        nodes={nodes}
-        edges={edges}
+        nodes={graphNodes}
+        edges={graphEdges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
